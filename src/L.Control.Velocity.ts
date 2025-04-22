@@ -4,6 +4,7 @@ import velocitycss from './leaflet-velocity.css';
 
 interface DisplayOptions {
   speedUnit: 'kt' | 'k/h' | 'mph' | 'm/s';
+  heightUnit: 'ft' | 'm';
   position: 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
   showCardinal: boolean;
   angleConvention: string;
@@ -11,6 +12,8 @@ interface DisplayOptions {
   emptyString: string;
   directionString: string;
   speedString: string;
+  heightString: string;
+  waveMode: boolean;
 }
 
 export default class ControlVelocity {
@@ -29,6 +32,9 @@ export default class ControlVelocity {
       directionString: "Direction",
       speedString: "Speed",
       showCardinal: false,
+      heightString: "Height",
+      heightUnit: 'ft',
+      waveMode: false,
     };
   }
 
@@ -156,18 +162,34 @@ export default class ControlVelocity {
   drawWindSpeed(ev: any) {
     const pos = this._map.containerPointToLatLng(L.point(ev.containerPoint.x, ev.containerPoint.y));
     const gridValue = this._windy.interpolate(pos.lng, pos.lat);
-    var template = "";
-    if (gridValue && !isNaN(gridValue[0]) && !isNaN(gridValue[1]) && gridValue[2]) {
+    let template = "";
+
+    if (gridValue && !isNaN(gridValue[0]) && !isNaN(gridValue[1])) {
       const deg = this.vectorToDegrees(gridValue[0], gridValue[1], this.options.angleConvention);
       const cardinal = this.options.showCardinal ? ` (${this.degreesToCardinalDirection(deg)}) ` : '';
-      template = `<strong> ${this.options.velocityType} ${this.options.directionString
-        }: </strong> ${deg.toFixed(2)}°${cardinal}, <strong> ${this.options.velocityType} ${this.options.speedString
-        }: </strong> ${this.vectorToSpeed(gridValue[0], gridValue[1], this.options.speedUnit).toFixed(2)} ${this.options.speedUnit}`;
+
+      let variableOutput = "";
+      let labelString = "";
+      let unit = "";
+
+
+      if (this.options.waveMode) {
+        const height = gridValue[2] && gridValue[2] >= 0 ? gridValue[2] : null;
+        variableOutput = height ? height.toFixed(2) : "No data";
+        labelString = this.options.heightString;
+        unit = height ? this.options.heightUnit : "";
+      } else {
+        variableOutput = this.vectorToSpeed(gridValue[0], gridValue[1], this.options.speedUnit).toFixed(2);
+        labelString = this.options.speedString;
+        unit = this.options.speedUnit;
+      }
+
+      template = `<strong>${this.options.velocityType} ${this.options.directionString}: </strong> ${deg.toFixed(2)}°${cardinal}, 
+                  <strong>${labelString}: </strong> ${variableOutput} ${unit}`;
+    } else {
+      template = this.options.emptyString;
     }
-    else {
-      if (this.options.emptyString)
-        template = this.options.emptyString;
-    }
+
     this._container.innerHTML = template;
   }
 }

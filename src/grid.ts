@@ -74,7 +74,7 @@ export default class Grid {
             }
         }
 
-        return new Vector(0, 0);
+        return new Vector(0, 0, 0);
 
     }
 
@@ -97,7 +97,17 @@ export default class Grid {
             d = x * y;
         var u = g00.u * a + g10.u * b + g01.u * c + g11.u * d;
         var v = g00.v * a + g10.v * b + g01.v * c + g11.v * d;
-        return new Vector(u, v);
+        var wh = undefined;
+        if (g00.waveHeight && g10.waveHeight && g01.waveHeight && g11.waveHeight) {
+            wh = g00.waveHeight * a + g10.waveHeight * b + g01.waveHeight * c + g11.waveHeight * d;
+
+            if (wh < 0) {
+                wh = 0;
+                u = 0;
+                v = 0;
+            }
+        }
+        return new Vector(u, v, wh);
     }
 
     /**

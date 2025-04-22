@@ -20,7 +20,8 @@ export default class AnimationBucket {
     }
 
     add(p: Particule, v: Vector) {
-        const index = this.colorScale.getColorIndex(p.intensity)
+        const variable = p.waveHeight || p.intensity;
+        const index = this.colorScale.getColorIndex(variable)
         if (index < 0 || index >= this.buckets.length) {
             console.log(index);
             return;
@@ -45,4 +46,9 @@ export default class AnimationBucket {
             }
         });
     }
+
+    getBuckets(): Particule[][] {
+        return this.buckets;
+      }
+      
 }

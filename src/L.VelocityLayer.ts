@@ -25,14 +25,17 @@ export default class VelocityLayer {
         position: 'bottomleft',
         emptyString: 'No velocity data',
         angleConvention: 'bearingCCW',
-        speedUnit: 'm/s'
+        speedUnit: 'm/s',
+        heightUnit: 'ft',
+        heightString: 'Height',
       },
+      waveMode: false,
       maxVelocity: 10, // used to align color scale
       colorScale: null,
       onAdd: null,
       onRemove: null,
       data: null,
-      paneName: "overlayPane"
+      paneName: "overlayPane",
     };
   }
 
@@ -174,7 +177,10 @@ export default class VelocityLayer {
 
     if (!this._mouseControl && this.options.displayValues) {
       const options = this.options.displayOptions || {};
-      this._mouseControl = L.control.velocity(options);
+      this._mouseControl = L.control.velocity({
+        ...options,
+        waveMode: this.options.waveMode,
+      });
       this._mouseControl.setWindy(this._windy);
       this._mouseControl.setOptions(this.options.displayOptions);
       this._mouseControl.addTo(this._map);

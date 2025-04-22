@@ -6,25 +6,27 @@ export default class Particule {
     public xt: number;
     public yt: number;
     public intensity: number;
-
+    public waveHeight?: number; 
+  
     constructor(x: number, y: number, maxAge: number) {
-        this.x = x;
-        this.y = y;
-        this.age = Math.floor(Math.random() * maxAge);
-        this.maxAge = maxAge;
+      this.x = x;
+      this.y = y;
+      this.age = Math.floor(Math.random() * maxAge);
+      this.maxAge = maxAge;
     }
-
+  
     reset(x: number, y: number) {
-        this.x = x;
-        this.y = y;
-        this.age = 0;
+      this.x = x;
+      this.y = y;
+      this.age = 0;
     }
-
+  
     get isDead(): boolean {
-        return this.age > this.maxAge;
+      return this.age > this.maxAge;
     }
-
+  
     grow() {
-        this.age++;
+      this.age++;
     }
-}
+  }
+  
