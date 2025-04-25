@@ -215,7 +215,7 @@ export default class Windy {
 
   public stop() {
     this.particules.splice(0, this.particules.length);
-    this.animationBucket.clear();
+    this.animationBucket?.clear();
     if (this.animationLoop) {
       clearTimeout(this.animationLoop);
       cancelAnimationFrame(this.animationLoop);
@@ -271,7 +271,7 @@ export default class Windy {
   }
 
   private evolve() {
-    this.animationBucket.clear();
+    this.animationBucket?.clear();
     this.particules.forEach((p: Particule) => {
       p.grow();
       if (p.isDead) {
