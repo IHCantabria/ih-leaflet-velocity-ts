@@ -1,3 +1,13 @@
+# Repository Archived
+
+**This repository is no longer maintained.**
+
+Please note:
+- Future development, maintenance, and new features (including compatibility with both Leaflet and Maplibre, as well as advanced wave functionalities) will take place in the actively maintained repository: [IHCantabria/ih-velocity-ts](https://github.com/IHCantabria/ih-velocity-ts).
+- No further updates or support will be provided here.
+
+---
+
 # IH-Leaflet-Velocity-TS
 
 A **TypeScript fork** of [leaflet-velocity-ts](https://github.com/0nza1101/leaflet-velocity-ts), which itself is based on the original [leaflet-velocity](https://github.com/onaci/leaflet-velocity) plugin for Leaflet.
